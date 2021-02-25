@@ -43,6 +43,7 @@
 
       // 3.监听上拉事件
       this.scroll.on('pullingUp', () => {
+        // console.log("more")
         this.$emit('pullingUp')
       })
     },

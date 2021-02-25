@@ -1,7 +1,9 @@
 <template>
   <div id="home">
+    <!-- 最上方导航栏 -->
     <nav-bar class="home-nav"><div slot="center">shopping street</div></nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
       <!-- 轮播图组件插入 -->
       <home-swiper :banners="banners"></home-swiper>
       <!-- 轮播图下方 -->
@@ -101,11 +103,14 @@ export default {
     getHomeGoods(type) {
       // 2.请求商品数据
       const page = this.goods[type].page + 1;
-      getHomeGoods("pop", 1).then((res) => {
+      getHomeGoods(type,page).then((res) => {
         // console.log(res);
         // 解构赋值
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
+
+        // 完成向上加载更多事件
+        this.$refs.scroll.finishPullUp()
       });
     },
 
@@ -133,9 +138,15 @@ export default {
       this.$refs.scroll.scrollTo(0,0,2000)
     },
 
-    // 
+    // 控制回到顶部按钮的位置
     contentScroll(position){
       this.isShow = (-position.y) > 1000 
+    },
+
+    // 
+    loadMore(){
+      // console.log("more")
+      this.getHomeGoods(this.currentType);
     }
   },
 };
