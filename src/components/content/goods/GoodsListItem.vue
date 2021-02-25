@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+  <div class="goods-item" @click="itemClick">
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <!-- 商品标题 -->
       <p>
@@ -28,7 +28,20 @@
           return {}
         }
       }
-    }
+    },
+    methods: {
+      //原生js监听图片是否加载完成
+      imageLoad(){
+        // 发送事件到bus总线 在home首页监听
+        this.$bus.$emit('itemImageLoad');
+      },
+
+      // 点击跳转详情页
+      itemClick(){
+        // console.log('pp')
+        this.$router.push('./detail/'+ this.goodsItem.iid)
+      }
+    },
   }
 </script>
 
