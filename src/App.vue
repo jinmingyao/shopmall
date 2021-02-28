@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- keep-alive使切换界面时，不会销毁界面 -->
-    <keep-alive>
+    <keep-alive exclude="Detail">
       <router-view></router-view>
     </keep-alive>
     <main-tab-bar></main-tab-bar>
