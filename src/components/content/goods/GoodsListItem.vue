@@ -37,8 +37,19 @@
     methods: {
       //原生js监听图片是否加载完成
       imageLoad(){
-        // 发送事件到bus总线 在home首页监听
+
         this.$bus.$emit('itemImageLoad');
+
+
+        // // 判断事件是否发生在首页
+        // if(this.$route.path.indexOf('/home') !== -1){
+        //   // 发送事件到bus总线 在home首页监听
+        //   this.$bus.$emit('homeitemImageLoad');
+        // }
+        // else if(this.$route.path.indexOf('/detail') !== -1){
+        //   this.$bus.$emit('detailitemImageLoad');
+        // }
+        
       },
 
       // 点击跳转详情页

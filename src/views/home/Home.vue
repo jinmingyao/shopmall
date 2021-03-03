@@ -41,6 +41,8 @@ import BackTop from '../../components/content/backTop/BackTop';
 // 导入数据
 import { getHomeData, getHomeGoods } from "network/home";
 import {debounce} from 'common/utils'
+import {itemListenerMixin} from 'common/mixin'
+
 
 // import BScroll from 'better-scroll'
 
@@ -76,9 +78,10 @@ export default {
       isShow:false,
       tabOffsetTop:0,
       isTabFixed:false,
-      saveY:0
+      saveY:0,
     };
   },
+  mixins:[itemListenerMixin],
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
@@ -93,18 +96,7 @@ export default {
     this.getHomeGoods("sell");
   },
   mounted() {
-    // 1.图片是否加载完成的事件监听
-    const funRefresh = this.$refs.scroll?.refresh;
-    const refresh = debounce(funRefresh,200);
-    // 监听事件总线
-    this.$bus.$on('itemImageLoad',() => {
-      // console.log('----')
-      // 加问好，先判断scroll是否已经加载完成，在执行后续操作
-      // 封装一个函数 在执行refresh之前进行防抖操作
-      // this.$refs.scroll?.refresh()
-      
-      refresh();
-    });
+    
   },
   activated() {
     // console.log(111)
@@ -116,6 +108,9 @@ export default {
     // console.log(222)
     // 离开页面时
     this.saveY = this.$refs.scroll?.getScrollY()
+
+    // 取消全局事件的监听
+    this.$bus.$off('itemImageLoad',this.itemListener)
   },
   methods: {
     // 网络请求相关方法

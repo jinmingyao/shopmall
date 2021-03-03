@@ -34,6 +34,8 @@ import NavBar from 'components/common/nav-bar/NavBar'
     methods: {
       titleClick(index){
         this.currentIndex = index;
+        // 点击事件发送到detail.vue
+        this.$emit('titleClick',index)
       },
       backClick(){
         this.$router.back();
