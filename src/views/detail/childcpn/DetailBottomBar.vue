@@ -32,7 +32,8 @@
     name:"DetailBottomBar",
     methods: {
       addToCart(){
-
+        // console.log('buy it')
+        this.$emit('addToCart')
       }
     },
   }
@@ -81,13 +82,13 @@
   .bar-right{
     font-size: 13px;
     color: #fff;
-    line-height: 58px;
+    line-height: 49px;
     
   }
   .bar-right .cart{
     background-color: #ffe817;
     color: #333;
-
+    padding: 0 2px;
   }
   .bar-right .buy{
     background-color: #f69;  

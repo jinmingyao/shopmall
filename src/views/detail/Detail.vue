@@ -13,6 +13,11 @@
       @scroll="contentScroll"
       :probe-type="3"
     >
+      <ul>
+        <li v-for="(item,index) in $store.state.cartList" :key="index">
+          {{item}}
+        </li>
+      </ul>
       <!-- 轮播图 -->
       <detail-swiper :top-images="topImages"></detail-swiper>
       <!-- 商品信息 -->
@@ -39,10 +44,13 @@
     </scroll>
 
     <!-- 底部工具栏 -->
-    <detail-bottom-bar class="detail-bot"></detail-bottom-bar>
+    <detail-bottom-bar @addToCart="addCart"></detail-bottom-bar>
 
     <!-- 组件监听点击需要click.native -->
     <back-top @click.native="backClick" v-show="isShow"></back-top>
+
+
+
   </div>
 </template>
 
@@ -187,7 +195,31 @@ export default {
       }
 
       // 3.是否显示回到顶部
+      // 控制backtop是否显示
+      this.isShow = (-position.y) > 1000 
     },
+
+     // 回到顶部
+    backClick(){
+      // scroll
+      this.$refs.scroll?.scrollTo(0,0,1000)
+    },
+
+    // 加入购物车
+    addCart(){
+      // console.log("-----")
+      // 1.获取部分商品信息 展示在购物车中
+      const product = {};
+      product.img = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.RealPrice;
+      product.iid = this.iid;
+
+      // 2.将商品添加到购物车
+      // this.$store.commit('addCart',product)
+      this.$store.dispatch('addCart',product)
+    }
   },
   mounted() {
     // console.log(this.themeTopYs)
@@ -217,6 +249,7 @@ export default {
 }
 .content {
   height: calc(100% - 44px - 49px);
+  overflow: hidden;
 }
 /* 两种方式都可以实现在固定区域滚动 */
 
@@ -237,6 +270,11 @@ export default {
 
 /* .detail-bot{
   position: relative;
+  z-index: 9;
+} */
+
+/* .content ul{
+  width: 100%;
   z-index: 9;
 } */
 </style>

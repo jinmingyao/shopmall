@@ -26,3 +26,27 @@ export const itemListenerMixin = {
     console.log("mixin")
   },
 }
+
+
+import BackTop from 'components/content/backTop/BackTop';
+
+
+// 将回到顶部组件设置为混入
+export const BackTopMixin = {
+  components:{
+    BackTop
+  },
+  data() {
+    return {
+      // 是否显示回到顶部
+      isShow:false,
+    }
+  },
+  methods: {
+     // 回到顶部
+     backClick(){
+      // scroll
+      this.$refs.scroll?.scrollTo(0,0,1000)
+    },
+  },
+}
