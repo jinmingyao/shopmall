@@ -13,11 +13,6 @@
       @scroll="contentScroll"
       :probe-type="3"
     >
-      <ul>
-        <li v-for="(item,index) in $store.state.cartList" :key="index">
-          {{item}}
-        </li>
-      </ul>
       <!-- 轮播图 -->
       <detail-swiper :top-images="topImages"></detail-swiper>
       <!-- 商品信息 -->
@@ -49,7 +44,7 @@
     <!-- 组件监听点击需要click.native -->
     <back-top @click.native="backClick" v-show="isShow"></back-top>
 
-
+    <!-- <toast :message="message" :show="show"></toast> -->
 
   </div>
 </template>
@@ -58,17 +53,22 @@
 import DetailNavBar from "./childcpn/DetailNavBar";
 import DetailSwiper from "./childcpn/DetailSwiper";
 import DetailBaseInfo from "./childcpn/DetailBaseInfo";
-import { getDetail, getRecommend, Goods, Shop, Param } from "network/detail";
 import DetailShopInfo from "./childcpn/DetailShopInfo.vue";
 import Scroll from "../../components/common/scroll/Scroll.vue";
 import DetailGoodsInfo from "./childcpn/DetailGoodsInfo.vue";
 import DetailParamInfo from "./childcpn/DetailParamInfo.vue";
 import DetailCommentInfo from "./childcpn/DetailCommentInfo.vue";
 import GoodsList from "../../components/content/goods/GoodsList.vue";
-import { debounce } from "common/utils";
-import { itemListenerMixin } from "common/mixin";
 import DetailBottomBar from './childcpn/DetailBottomBar.vue';
 import BackTop from 'components/content/backTop/BackTop';
+
+
+import { getDetail, getRecommend, Goods, Shop, Param } from "network/detail";
+import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin";
+
+
+// import Toast from '../../components/common/toast/Toast.vue';
 
 
 export default {
@@ -84,7 +84,8 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
-    BackTop
+    BackTop,
+    // Toast
   },
   data() {
     return {
@@ -101,6 +102,9 @@ export default {
       currentIndex: 0,
       // 是否显示回到顶部
       isShow:false,
+
+      // message:'',
+      // show:false
     };
   },
   mixins: [itemListenerMixin],
@@ -218,7 +222,19 @@ export default {
 
       // 2.将商品添加到购物车
       // this.$store.commit('addCart',product)
-      this.$store.dispatch('addCart',product)
+      // 调用vuex中actions的addcart方法
+      this.$store.dispatch('addCart',product).then(res => {
+        // console.log(res);
+        // this.show = true;
+        // this.message = res;
+
+        // setTimeout(() => {
+        //   this.show = false;
+        //   this.message = ''
+        // },1500)
+
+        this.$toast.show(res,2000);
+      })
     }
   },
   mounted() {
